@@ -43,13 +43,17 @@ phenopacket-explorer/
 │   └── visualizer.py         # Recursive Graphviz Logic & Pruning Engine
 └── data/
     └── raw/                  # Default demo data
-
 ```
+
+## 🧠 How It Works: The Parser
+Standard JSON visualizers "explode" when they hit large lists (e.g., 50  phenotypic_features). This tool uses a  Filter in src/visualizer.py:
+
+1. **Lists < 2 items**: Fully expanded. The parser draws these connections using invisible "connector nodes" (`shape='point'`) to keep lines smooth and readable.
+
+2. **Lists > 2 items**: Collapsed into summary nodes (e.g., `[Phenotypic Features: 45 items]`). This prevents the graph from becoming a "spiderweb" of unreadable data.
 ## 📦 Dependencies
 
 * `python=3.10`
 * `streamlit`: UI Framework
 * `graphviz`: Graph Rendering Engine (requires system binary)
 * `svg-pan-zoom`: JavaScript library (injected via component) for canvas interaction.
-
-```
