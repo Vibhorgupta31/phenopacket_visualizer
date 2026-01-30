@@ -19,7 +19,7 @@ We use a strict `environment.yml` to guarantee stability.
 
 ```bash
 conda env create -f environment.yml
-conda activate phenopacket-env
+conda activate pheno_visualizer
 ```
 
 ### 3. Run the App
