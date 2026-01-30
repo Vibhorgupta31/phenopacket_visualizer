@@ -9,8 +9,8 @@ This project uses **Conda** for reproducible environment management to ensure th
 
 ### 1. Clone the Repository
 ```bash
-git clone [https://github.com/YOUR_USERNAME/phenopacket-explorer.git](https://github.com/YOUR_USERNAME/phenopacket-explorer.git)
-cd phenopacket-explorer
+git clone [https://github.com/Vibhorgupta31/phenopacket_visualizer.git](https://github.com/Vibhorgupta31/phenopacket_visualizer.git)
+cd phenopacket_visualizer
 ```
 
 ### 2. Create the Environment
