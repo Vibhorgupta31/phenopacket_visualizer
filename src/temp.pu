@@ -1,0 +1,45 @@
+import graphviz
+
+
+def creata_topology_graph(data):
+    '''
+
+    :param data:
+    :return:
+    '''
+    graph = graphviz.Digraph()
+    graph.attr(rankdir='LR')
+    graph.attr('node', shape='box', style='filled', color='lightblue')
+
+    def add_nodes(parent_name, current_data):
+        '''
+
+        :param parent_name:
+        :param current_name:
+        :return:
+        '''
+        if isinstance(current_data, dict):
+            for key, value in current_data.items():
+                node_id = f'{parent_name}_{key}'
+
+            if isinstance(value, list):
+                label = f"{key}\n[{len(value)} items]"
+                graph.node(node_id, label, fillcolor='#ffcccc')
+                graph.edge(parent_name, node_id)
+
+            elif isinstance(value, dict):
+                graph.node(node_id, key)
+                graph.edge(parent_name, node_id)
+                add_nodes(node_id, value)
+
+            else:
+                leaf_id = f'{node_id}_val'
+                graph.node(node_id, key)
+                graph.node(leaf_id, str(value), shape='ellipse', fillcolor='lightyellow')
+                graph.edge(parent_name, node_id)
+                graph.edge(node_id, leaf_id)
+
+        graph.node('Root', 'Phenopacket')
+    add_nodes('Root', data)
+
+    return graph
