@@ -5,7 +5,7 @@
 A visualization tool for phenopackets data. This application parses complex, nested JSON phenopackets and renders them as readable topology graphs.
 
 
-## 🛠️ Installation
+# 🛠️ Installation
 
 ## 🛠️ Local Installation (Conda)
 
