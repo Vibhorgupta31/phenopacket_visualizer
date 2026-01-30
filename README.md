@@ -12,7 +12,7 @@ A visualization tool for phenopackets data. This application parses complex, nes
 Recommendation to use  **Conda** locally because it installs both Python and the required Graphviz system binary in one go.
 ### 1. Clone the Repository
 ```bash
-git clone [https://github.com/Vibhorgupta31/phenopacket_visualizer.git](https://github.com/Vibhorgupta31/phenopacket_visualizer.git)
+git clone https://github.com/Vibhorgupta31/phenopacket_visualizer.git
 cd phenopacket_visualizer
 ```
 
@@ -32,13 +32,12 @@ Use `pip` inside Conda to ensure library versions match the Streamlit Cloud envi
 
 ```bash
 pip install -r requirements.txt
-
 ```
 
 ### 4. Run the App
 
 ```bash
-streamlit run phenopacket_topolody.py
+streamlit run phenopacket_topology.py
 ```
 ## ☁️ Deployment Notes (Streamlit Cloud)
 
