@@ -1,6 +1,7 @@
 import streamlit as st
-import streamlit.components.v1 as components
-from src import loader, uploader, visualizer
+from streamlit_echarts import st_echarts
+from src import loader, uploader
+from src.echarts_visualizer import parse_to_echarts
 
 # Page Configuration
 st.set_page_config(
@@ -18,46 +19,51 @@ if data:
         st.code(yaml_text, language="yaml")
 
     st.subheader("Structured Topology")
-    graph = visualizer.create_topology_graph(data)
-    svg_data = graph.pipe(format='svg').decode('utf-8')
 
-    # This HTML / CSS wrapper creates a box that scrolls to see the whole graph
-    # Gemini Code
+    # Convert the JSON to the ECharts format
 
-    html_block = f"""
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <script src="https://bumbu.me/svg-pan-zoom/dist/svg-pan-zoom.min.js"></script>
-        </head>
-        <body style="margin: 0; padding: 0; overflow: hidden;">
-            <div id="container" style="width: 100%; height: 900px; border: 1px solid #ccc;">
-                {svg_data}
-            </div>
-            <script>
-                // Wait for the SVG to load, then activate pan/zoom
-                window.onload = function() {{
-                    // Find the SVG element inside the string
-                    var svgElement = document.querySelector("svg");
+    tree_data = parse_to_echarts(data, label="Phenopacket")
 
-                    // Set width/height to 100% of container so it fits the window
-                    svgElement.setAttribute("width", "100%");
-                    svgElement.setAttribute("height", "100%");
 
-                    // Initialize the library
-                    svgPanZoom(svgElement, {{
-                        zoomEnabled: true,
-                        controlIconsEnabled: true,  // Adds + and - buttons
-                        fit: true,
-                        center: true
-                    }});
-                }};
-            </script>
-        </body>
-        </html>
-    """
+    def count_leaves(node):
+        """Recursively counts the number of leaf nodes in the tree."""
+        if not node.get("children"):
+            return 1
+        return sum(count_leaves(child) for child in node["children"])
 
-    components.html(html_block, height=800)
 
+    leaf_count = count_leaves(tree_data)
+    dynamic_height = max(600, leaf_count * 20)
+
+    # Define the chart options
+    options = {
+        "tooltip": {"trigger": "item", "triggerOn": "mousemove"},
+        "series": [
+            {
+                "type": "tree",
+                "data": [tree_data],
+
+                "symbolSize": 10,
+                "label": {"position": "left", "verticalAlign": "middle", "align": "right", "fontSize": 12},
+                "leaves": {
+                    "label": {"position": "right", "verticalAlign": "middle", "align": "left", "fontSize": 12},
+                },
+                "expandAndCollapse": True,
+                "animationDuration": 550,
+                "animationDurationUpdate": 750,
+                "symbolSize": 10,
+
+                # Tweak this to push text further from the dot
+                "label": {
+                    "position": "left",
+                    "verticalAlign": "middle",
+                    "align": "right",
+                    "distance": 10  # Add 10px buffer between dot and text
+                },
+
+            }
+        ]
+    }
+    st_echarts(options=options, height= '800px')
 else:
     st.error(f"No data available to run the app.")
