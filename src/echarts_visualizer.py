@@ -42,6 +42,14 @@ def get_smart_label(item, index, parent_key):
         if "id" in item:
             return f"Interpretation: {item['id']}"
 
+    # --- 5. VARIANT EXPRESSIONS (Flattened) ---
+    if "expression" in str(parent_key).lower():
+        if "syntax" in item and "value" in item:
+            # Returns: "hgvs.c: NM_000141.5:c.755C>G"
+            return f"{item['syntax']}: {item['value']}"
+        elif "syntax" in item:
+            return item["syntax"]
+
     # --- FALLBACKS (If nothing specific matched) ---
     if "label" in item:
         return item["label"]
